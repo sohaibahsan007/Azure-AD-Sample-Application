@@ -1,7 +1,5 @@
-import { Injectable } from '@angular/core';
-import { Observable, of } from 'rxjs';
-
-import { Credentials, CredentialsService } from './credentials.service';
+import { Injectable, OnDestroy } from '@angular/core';
+import { MsalService } from '@azure/msal-angular';
 
 export interface LoginContext {
   username: string;
@@ -16,31 +14,31 @@ export interface LoginContext {
 @Injectable({
   providedIn: 'root',
 })
-export class AuthenticationService {
-  constructor(private credentialsService: CredentialsService) {}
-
+export class AuthenticationService implements OnDestroy {
+  loggedIn = false;
+  constructor(private authService: MsalService) {}
+  ngOnDestroy() {}
   /**
    * Authenticates the user.
    * @param context The login parameters.
    * @return The user credentials.
    */
-  login(context: LoginContext): Observable<Credentials> {
-    // Replace by proper authentication call
-    const data = {
-      username: context.username,
-      token: '123456',
-    };
-    this.credentialsService.setCredentials(data, context.remember);
-    return of(data);
+  checkAccount(): boolean {
+    this.loggedIn = !!this.authService.getAccount();
+    return this.loggedIn;
   }
-
   /**
    * Logs out the user and clear credentials.
    * @return True if the user was logged out successfully.
    */
-  logout(): Observable<boolean> {
-    // Customize credentials invalidation here
-    this.credentialsService.setCredentials();
-    return of(true);
+  loginWithAd() {
+    const isIE =
+      window.navigator.userAgent.indexOf('MSIE ') > -1 || window.navigator.userAgent.indexOf('Trident/') > -1;
+
+    if (isIE) {
+      this.authService.loginRedirect();
+    } else {
+      this.authService.loginPopup();
+    }
   }
 }

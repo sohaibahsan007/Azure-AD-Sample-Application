@@ -5,6 +5,8 @@ import { merge } from 'rxjs';
 import { filter, map, switchMap } from 'rxjs/operators';
 import { environment } from '@env/environment';
 import { Logger, untilDestroyed } from '@core';
+import { BroadcastService, MsalService } from '@azure/msal-angular';
+import { AuthenticationService } from './auth';
 const log = new Logger('App');
 @Component({
   selector: 'app-root',
@@ -12,7 +14,15 @@ const log = new Logger('App');
   styleUrls: ['./app.component.scss'],
 })
 export class AppComponent implements OnInit, OnDestroy {
-  constructor(private router: Router, private activatedRoute: ActivatedRoute, private titleService: Title) {}
+  isIframe = false;
+  constructor(
+    private router: Router,
+    private broadcastService: BroadcastService,
+    private authService: MsalService,
+    private auth: AuthenticationService,
+    private activatedRoute: ActivatedRoute,
+    private titleService: Title
+  ) {}
 
   ngOnInit() {
     // Setup logger
@@ -21,6 +31,28 @@ export class AppComponent implements OnInit, OnDestroy {
     }
 
     log.debug('init');
+
+    // handle Azure AD
+    this.isIframe = window !== window.parent && !window.opener;
+    if (!this.auth.checkAccount()) {
+      this.router.navigateByUrl('/login');
+    }
+
+    this.broadcastService.subscribe('msal:loginSuccess', () => {
+      this.auth.checkAccount();
+      this.router.navigateByUrl('/home');
+    });
+
+    this.broadcastService.subscribe('msal:loginFailure', (error) => {
+      console.log('Login Fails:', error);
+    });
+    this.authService.handleRedirectCallback((authError, response) => {
+      if (authError) {
+        console.error('Redirect Error: ', authError.errorMessage);
+        return;
+      }
+      console.log('Redirect Success: ', response.accessToken);
+    });
 
     const onNavigationEnd = this.router.events.pipe(filter((event) => event instanceof NavigationEnd));
 

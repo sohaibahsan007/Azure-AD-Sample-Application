@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 
-import { AuthenticationService, CredentialsService } from '@app/auth';
+import { AuthenticationService } from '@app/auth';
+import { MsalService } from '@azure/msal-angular';
 
 @Component({
   selector: 'app-header',
@@ -11,11 +12,7 @@ import { AuthenticationService, CredentialsService } from '@app/auth';
 export class HeaderComponent implements OnInit {
   menuHidden = true;
 
-  constructor(
-    private router: Router,
-    private authenticationService: AuthenticationService,
-    private credentialsService: CredentialsService
-  ) {}
+  constructor(private router: Router, private authenticationService: MsalService) {}
 
   ngOnInit() {}
 
@@ -24,11 +21,11 @@ export class HeaderComponent implements OnInit {
   }
 
   logout() {
-    this.authenticationService.logout().subscribe(() => this.router.navigate(['/login'], { replaceUrl: true }));
+    this.authenticationService.logout();
   }
 
   get username(): string | null {
-    const credentials = this.credentialsService.credentials;
-    return credentials ? credentials.username : null;
+    const credentials = this.authenticationService.getAccount();
+    return credentials ? credentials.userName : null;
   }
 }

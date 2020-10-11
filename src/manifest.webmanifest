@@ -1,6 +1,6 @@
 {
-  "name": "SampleAppReplacement",
-  "short_name": "SampleAppReplacement",
+  "name": "AzureADSampleApplication",
+  "short_name": "AzureADSampleApplication",
   "theme_color": "#488aff",
   "background_color": "#488aff",
   "display": "standalone",

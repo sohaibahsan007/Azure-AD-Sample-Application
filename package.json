@@ -1,5 +1,5 @@
 {
-  "name": "sample-app-replacement",
+  "name": "azure-ad-sample-application",
   "version": "1.0.0",
   "private": true,
   "scripts": {
@@ -30,11 +30,13 @@
     "@angular/platform-browser-dynamic": "^10.0.14",
     "@angular/router": "^10.0.14",
     "@angular/service-worker": "^10.0.14",
+    "@azure/msal-angular": "^1.1.1",
     "@fortawesome/fontawesome-free": "^5.14.0",
     "@ng-bootstrap/ng-bootstrap": "^7.0.0",
     "bootstrap": "^4.5.2",
     "lodash": "^4.17.20",
     "moment": "^2.27.0",
+    "msal": "^1.4.1",
     "rxjs": "^6.6.2",
     "tslib": "^2.0.1",
     "zone.js": "~0.10.3"
