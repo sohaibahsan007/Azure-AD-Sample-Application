@@ -1,0 +1,28 @@
+{
+  "generator-ngx-rocket": {
+    "version": "9.0.0",
+    "props": {
+      "location": "path",
+      "strict": false,
+      "skipInstall": false,
+      "skipQuickstart": false,
+      "initGit": true,
+      "usePrefix": true,
+      "appName": "SampleAppReplacement",
+      "target": ["web"],
+      "pwa": true,
+      "ui": "bootstrap",
+      "auth": true,
+      "lazy": true,
+      "angulartics": false,
+      "languages": ["en-US"],
+      "tools": ["prettier", "compodoc"],
+      "utility": ["lodash", "moment"],
+      "deploy": "none",
+      "projectName": "sample-app-replacement",
+      "packageManager": "npm",
+      "mobile": [],
+      "desktop": []
+    }
+  }
+}
