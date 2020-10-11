@@ -1,5 +1,8 @@
 # AzureADSampleApplication
 
+# Project URL 
+https://azure-ad-sample-application.azurewebsites.net
+
 This project was generated with [ngX-Rocket](https://github.com/ngx-rocket/generator-ngx-rocket/)
 version 9.0.0
 
